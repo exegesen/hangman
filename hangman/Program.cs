@@ -3,7 +3,7 @@ using System.Text;
 class Hangman {
 
     const char ZEROVAL = (char)128;
-    const int INITIAL_GUESSES = 3000;
+    const int INITIAL_GUESSES = 10;
 
     static void Main(String[] args) {
         while (true)

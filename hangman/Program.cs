@@ -9,11 +9,11 @@ class Hangman {
         while (true)
         {
             Console.WriteLine("Welcome to hangman!");
-            newGame();
+            NewGame();
         }
 
     }
-    static void newGame() {
+    static void NewGame() {
         
         String word = ReturnWord();
         GameState g = new GameState(word,INITIAL_GUESSES);

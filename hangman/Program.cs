@@ -3,7 +3,7 @@ using System.Text;
 class Hangman {
 
     const char ZEROVAL = (char)128;
-    const int INITIAL_GUESSES = 10;
+    const int INITIAL_GUESSES = 3;
 
     static void Main(String[] args) {
         while (true)
@@ -14,10 +14,8 @@ class Hangman {
 
     }
     static void newGame() {
-        String[] words = ReturnWordList();
-        Random random = new Random();
-        int wordNo = random.Next(0,words.Length);
-        String word = words[wordNo];
+        
+        String word = ReturnWord();
         GameState g = new GameState(word,INITIAL_GUESSES);
         while (true)
         {
@@ -30,7 +28,7 @@ class Hangman {
                 Console.WriteLine("");
                 break;
             }
-            if (g.guessesLeft < 0) {
+            if (g.guessesLeft < 1) {
                 Console.WriteLine("You lost the game!");
                 Console.WriteLine("Correct word: " + g.word);
                 Console.WriteLine("Incorrect word guesses: " + g.wrongWords.ToString());
@@ -151,7 +149,7 @@ class Hangman {
             }
         }
     }
-    public static String[] ReturnWordList()
+    public static String ReturnWord()
     {
         String[] words = {"a",
 "abandon",
@@ -3153,6 +3151,9 @@ class Hangman {
 "yourself",
 "youth",
 "zone" };
-        return words;
+        
+        Random random = new Random();
+        int wordNo = random.Next(0, words.Length);
+        return words[wordNo];
     }
 }

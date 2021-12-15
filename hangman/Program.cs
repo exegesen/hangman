@@ -63,7 +63,96 @@ class Hangman {
 
         }
     }
-    public static String[] ReturnWordList() {
+    
+    class GameState
+    {
+        public String word;
+        char[] wordAsCharArray;
+         public int guessesLeft;
+        public StringBuilder wrongWords;
+        public LinkedList<String> searchableWrongWords;
+        public char[] correctLetters;
+        public bool gameWon;
+        public GameState(String wordd, int noguess) {
+            word = wordd;
+            gameWon = false;
+            wordAsCharArray = word.ToCharArray();
+            guessesLeft = noguess;
+            correctLetters = new char[wordd.Length];
+            wrongWords = new StringBuilder();
+            searchableWrongWords = new LinkedList<String>();
+            for (int i = 0; i < correctLetters.Length; i++) {
+                correctLetters[i] = ZEROVAL;
+            }
+
+        }
+        public bool IsGameWon() {
+            foreach (char c in correctLetters) {
+                if (c == ZEROVAL) { 
+                    gameWon=false;
+                    return gameWon;
+                }
+            }
+            gameWon = true;
+            return gameWon;
+        }
+        public String printGuesses() {
+            String returnval = "";
+            foreach(char c in correctLetters) {
+                if (c == ZEROVAL)
+                {
+                    returnval += "_";
+                }
+                else {
+                    returnval += c;
+                }
+               
+            }
+            return returnval;
+        }
+        public bool GuessChar(char c) {
+            bool correctGuess = false;
+            if (searchableWrongWords.Contains(c.ToString())) {
+                Console.WriteLine("Letter already guessed!");
+                return false;
+            }
+            for (int i = 0; i < wordAsCharArray.Length; i++) {
+                if (wordAsCharArray[i] == c) {
+                    correctLetters[i] = c;
+                    correctGuess = true;
+                }
+                
+            }
+            if (correctGuess == false) {
+                wrongWords.Append(c + ", ");
+                searchableWrongWords.AddLast(c.ToString());
+                guessesLeft--;
+            }
+            return correctGuess;
+        }
+        public bool GuessWord(String s)
+        {
+            if (searchableWrongWords.Contains(s))
+            {
+                Console.WriteLine("Word already guessed before!");
+                return false;
+            }
+            if (word.Equals(s))
+            {
+                correctLetters = s.ToCharArray();
+                return true;
+            }
+
+            else { 
+                wrongWords.Append(s + ", ");
+                searchableWrongWords.AddLast(s);
+                guessesLeft--;
+                return false;
+            }
+        }
+    }
+    public static String[] ReturnWordList()
+    {
         String[] words = {"a",
 "abandon",
 "ability",
@@ -3065,92 +3154,5 @@ class Hangman {
 "youth",
 "zone" };
         return words;
-    }
-    class GameState
-    {
-        public String word;
-        char[] wordAsCharArray;
-         public int guessesLeft;
-        public StringBuilder wrongWords;
-        public LinkedList<String> searchableWrongWords;
-        public char[] correctLetters;
-        public bool gameWon;
-        public GameState(String wordd, int noguess) {
-            word = wordd;
-            gameWon = false;
-            wordAsCharArray = word.ToCharArray();
-            guessesLeft = noguess;
-            correctLetters = new char[wordd.Length];
-            wrongWords = new StringBuilder();
-            searchableWrongWords = new LinkedList<String>();
-            for (int i = 0; i < correctLetters.Length; i++) {
-                correctLetters[i] = ZEROVAL;
-            }
-
-        }
-        public bool IsGameWon() {
-            foreach (char c in correctLetters) {
-                if (c == ZEROVAL) { 
-                    gameWon=false;
-                    return gameWon;
-                }
-            }
-            gameWon = true;
-            return gameWon;
-        }
-        public String printGuesses() {
-            String returnval = "";
-            foreach(char c in correctLetters) {
-                if (c == ZEROVAL)
-                {
-                    returnval += "_";
-                }
-                else {
-                    returnval += c;
-                }
-               
-            }
-            return returnval;
-        }
-        public bool GuessChar(char c) {
-            bool correctGuess = false;
-            if (searchableWrongWords.Contains(c.ToString())) {
-                Console.WriteLine("Letter already guessed!");
-                return false;
-            }
-            for (int i = 0; i < wordAsCharArray.Length; i++) {
-                if (wordAsCharArray[i] == c) {
-                    correctLetters[i] = c;
-                    correctGuess = true;
-                }
-                
-            }
-            if (correctGuess == false) {
-                wrongWords.Append(c + ", ");
-                searchableWrongWords.AddLast(c.ToString());
-                guessesLeft--;
-            }
-            return correctGuess;
-        }
-        public bool GuessWord(String s)
-        {
-            if (searchableWrongWords.Contains(s))
-            {
-                Console.WriteLine("Word already guessed before!");
-                return false;
-            }
-            if (word.Equals(s))
-            {
-                correctLetters = s.ToCharArray();
-                return true;
-            }
-
-            else { 
-                wrongWords.Append(s + ", ");
-                searchableWrongWords.AddLast(s);
-                guessesLeft--;
-                return false;
-            }
-        }
     }
 }
